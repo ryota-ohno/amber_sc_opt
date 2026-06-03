@@ -132,7 +132,7 @@ f'saveamberparm MOL {file_basename}.prmtop {file_basename}.inpcrd\n',
     return file_job,f'{file_basename}.out'
 
 def make_xyzfile(monomer_name,params_dict):
-    phi1 = float(params_dict.get('phi1',0.0));phi2 = float(params_dict.get('phi2',0.0))
+    phi1 = int(params_dict.get('phi1',0.0));phi2 = int(params_dict.get('phi2',0.0))
 
     monomer_array_i = get_monomer_xyzR(monomer_name,0,0,0,0,0,phi1,phi2)
     xyz_list=[]
@@ -155,7 +155,7 @@ def make_xyz(monomer_name,params_dict):
     return xyzfile_name + '.xyz'
 
 def make_gjf_xyz(auto_dir,monomer_name,params_dict):
-    phi1 = float(params_dict.get('phi1',0.0));phi2 = float(params_dict.get('phi2',0.0))
+    phi1 = int(params_dict.get('phi1',0.0));phi2 = int(params_dict.get('phi2',0.0))
 
     monomer_array = get_monomer_xyzR(monomer_name,0,0,0,0,0,phi1,phi2)
     line_list_monomer = get_xyzR_lines(monomer_array)
@@ -172,11 +172,13 @@ def make_gjf_xyz(auto_dir,monomer_name,params_dict):
 def get_file_name_from_dict(monomer_name,params_dict):
     xyzfile_name = ''
     xyzfile_name += monomer_name
+    xyzfile_name += '_mono'
     for key,val in params_dict.items():
         val=float(val)
         if key in ['phi1','phi2']:
             val = int(val)
-        xyzfile_name += '_mono_{}'.format(val)
+            xyzfile_name += f'_{val}'
+    
     return xyzfile_name + '.mol2'
     
 def exec_gjf_mono(auto_dir, monomer_name, params_dict,isTest=True):

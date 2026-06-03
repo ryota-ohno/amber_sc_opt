@@ -143,7 +143,7 @@ f'saveamberparm MOL {file_basename}.prmtop {file_basename}.inpcrd\n',
 ##################gaussview##################
 def make_xyzfile(monomer_name,params_dict,structure_type):
     a = float(params_dict.get('a',0.0));b = float(params_dict.get('b',0.0)); z = float(params_dict.get('z',0.0))
-    A2 = float(params_dict.get('A2',0.0)); A3 = float(params_dict.get('theta',0.0)); phi1 = float(params_dict.get('phi1',0.0)); phi2 = float(params_dict.get('phi2',0.0))
+    A2 = float(params_dict.get('A2',0.0)); A3 = float(params_dict.get('theta',0.0)); phi1 = int(params_dict.get('phi1',0.0)); phi2 = int(params_dict.get('phi2',0.0))
 
     monomer_array_i = get_monomer_xyzR(monomer_name,0,0,0,A2,A3,phi1,phi2)
     
@@ -184,7 +184,7 @@ def make_xyz(monomer_name,params_dict,structure_type):
 
 def make_gjf_xyz(auto_dir,monomer_name,params_dict,structure_type):
     a = float(params_dict.get('a',0.0));b = float(params_dict.get('b',0.0)); z = float(params_dict.get('z',0.0))
-    A2 = float(params_dict.get('A2',0.0)); A3 = float(params_dict.get('theta',0.0)); phi1 = float(params_dict.get('phi1',0.0)); phi2 = float(params_dict.get('phi2',0.0))
+    A2 = float(params_dict.get('A2',0.0)); A3 = float(params_dict.get('theta',0.0)); phi1 = int(params_dict.get('phi1',0.0)); phi2 = int(params_dict.get('phi2',0.0))
 
     monomer_array_i = get_monomer_xyzR(monomer_name,0,0,0,A2,A3,phi1,phi2)
     monomer_array_p1 = get_monomer_xyzR(monomer_name,a,0,0,A2,A3,phi1,phi2)##1,2がb方向
