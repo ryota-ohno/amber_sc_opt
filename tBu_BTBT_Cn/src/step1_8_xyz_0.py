@@ -10,13 +10,13 @@ import shutil
 import csv
 
 def main_process(args):
-    auto_dir = f'/home/ohno/Working/amber_sc_opt/{args.monomer_name}/{args.auto_dir}'
+    auto_dir = f'/home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/{args.auto_dir}'
     os.makedirs(auto_dir, exist_ok=True)
     os.makedirs(os.path.join(auto_dir,'amber'), exist_ok=True)
     os.makedirs(os.path.join(auto_dir,'gaussview'), exist_ok=True)
     amber_path=os.path.join(auto_dir,'amber')
-    shutil.copy(f'/home/ohno/Working/amber_sc_opt/{args.monomer_name}/src/FF_calc.in',amber_path)
-    shutil.copy(f'/home/ohno/Working/amber_sc_opt/{args.monomer_name}/monomer/{args.monomer_name}.frcmod',amber_path)
+    shutil.copy(f'/home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/src/FF_calc.in',amber_path)
+    shutil.copy(f'/home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/monomer/{args.monomer_name}.frcmod',amber_path)
     
     auto_csv_path = os.path.join(auto_dir,'step1.csv')
     if not os.path.exists(auto_csv_path): 
