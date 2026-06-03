@@ -118,7 +118,7 @@ f'rm {file_basename}.prmtop\n',
 ]    
     lines_tleap=['source /home/ohno/anaconda3/envs/AmberTools23/dat/leap/cmd/leaprc.gaff\n',
 f'MOL = loadmol2 {file_basename}.mol2\n',
-f'loadamberparams ditBu_BTBT.frcmod\n',
+f'loadamberparams tBu_BTBT_C9.frcmod\n',
 f'saveamberparm MOL {file_basename}.prmtop {file_basename}.inpcrd\n',
 'quit\n']
     file_job = os.path.join(auto_dir,f'amber/job_{file_basename}.sh')
