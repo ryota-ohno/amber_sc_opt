@@ -107,7 +107,7 @@ def get_one_exe(auto_dir,file_name):
     file_basename = os.path.splitext(file_name)[0]
     lines_job=[
 '#!/bin/bash\n','\n',
-'source ~/anaconda3/etc/profile.d/conda.sh \n',
+'source /home/ohno/anaconda3/etc/profile.d/conda.sh \n',
 'conda activate AmberTools23 \n','\n',
 f'antechamber -i {file_basename}.mol2 -fi mol2 -o {file_basename}_.mol2 -fo mol2 -s 2\n',
 #f'parmchk2 -i {file_basename}_.mol2 -f mol2 -o {file_basename}.frcmod\n',

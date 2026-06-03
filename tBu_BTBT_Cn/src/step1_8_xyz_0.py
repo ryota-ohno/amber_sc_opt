@@ -1,6 +1,6 @@
 ##tetracene層内計算
 import os
-os.environ['HOME'] ='/home/HasegawaLab'
+os.environ['HOME'] ='/home/ohno'
 import time
 from make_8_xyz import exec_gjf##計算した点のxyzfileを出す
 from make_mono_xyz import exec_gjf_mono##計算した点のxyzfileを出す

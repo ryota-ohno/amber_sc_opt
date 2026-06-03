@@ -114,7 +114,7 @@ def get_one_exe(auto_dir,file_name):
     file_basename = os.path.splitext(file_name)[0]
     lines_job=[
 '#!/bin/bash\n','\n',
-'source ~/anaconda3/etc/profile.d/conda.sh \n',
+'source /home/ohno/anaconda3/etc/profile.d/conda.sh \n',
 'conda activate AmberTools23 \n','\n',
 f'parmchk2 -i {file_basename}.mol2 -f mol2 -o {file_basename}.frcmod\n',
 f'tleap -f {file_basename}_tleap.in\n',
