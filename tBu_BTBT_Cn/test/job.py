@@ -25,6 +25,8 @@ def init_process(args):
         '#$ -pe OpenMP 40 \n',
         '\n',
         'hostname \n',
+        'source ~/anaconda3/etc/profile.d/conda.sh \n',
+        'conda activate AmberTools23 \n',
         '\n',
         f'python /home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/src/step1_8_xyz_0.py --auto-dir {args.auto_dir}/{dir_name} --monomer-name {monomer_name} --num-nodes 5\n',
         '\n',
