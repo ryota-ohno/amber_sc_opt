@@ -133,6 +133,7 @@ def get_file_name_from_dict(monomer_name,params_dict):
     xyzfile_name += '_mono'
     for key,val in params_dict.items():
         val=float(val)
+        xyzfile_name += '_{}'.format(val)
     return xyzfile_name + '.mol2'
     
 def exec_gjf_mono(auto_dir, monomer_name, params_dict,isTest=True):
