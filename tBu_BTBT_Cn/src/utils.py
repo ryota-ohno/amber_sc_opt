@@ -1,5 +1,6 @@
 import math
 import os
+import numpy as np
 
 def get_E(file):
     if not os.path.exists(file):
@@ -18,12 +19,11 @@ def get_E(file):
 
 def Rod(n,theta_in):
     nx,ny,nz=n
-    theta_t=math.radians(theta_in)
-    Rod=[[math.cos(theta_t)+(nx**2)*(1-math.cos(theta_t)),nx*ny*(1-math.cos(theta_t))+nz*math.sin(theta_t),nx*nz*(1-math.cos(theta_t))-ny*math.sin(theta_t)],
-        [nx*ny*(1-math.cos(theta_t))-nz*math.sin(theta_t),math.cos(theta_t)+(ny**2)*(1-math.cos(theta_t)),ny*nz*(1-math.cos(theta_t))+nx*math.sin(theta_t)],
-        [nx*nz*(1-math.cos(theta_t))+ny*math.sin(theta_t),ny*nz*(1-math.cos(theta_t))-nx*math.sin(theta_t),math.cos(theta_t)+(nz**2)*(1-math.cos(theta_t))]]
+    theta_t=np.radians(theta_in)
+    Rod=np.array([[np.cos(theta_t)+(nx**2)*(1-np.cos(theta_t)),nx*ny*(1-np.cos(theta_t))-nz*np.sin(theta_t),nx*nz*(1-np.cos(theta_t))+ny*np.sin(theta_t)],
+                [nx*ny*(1-np.cos(theta_t))+nz*np.sin(theta_t),np.cos(theta_t)+(ny**2)*(1-np.cos(theta_t)),ny*nz*(1-np.cos(theta_t))-nx*np.sin(theta_t)],
+                [nx*nz*(1-np.cos(theta_t))-ny*np.sin(theta_t),ny*nz*(1-np.cos(theta_t))+nx*np.sin(theta_t),np.cos(theta_t)+(nz**2)*(1-np.cos(theta_t))]])
     return Rod
-
 def R2atom(R):
     if R==1.8:
         return 'S'
