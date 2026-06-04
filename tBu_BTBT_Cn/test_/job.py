@@ -10,7 +10,7 @@ def init_process(args):
     auto_dir = f'/home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/{args.auto_dir}'
     monomer_name=args.monomer_name
     df_init=pd.read_csv(os.path.join(auto_dir,'step1_init_params.csv'))
-    z_list=[np.round(z,1) for z in np.linspace(-4.0,4.0,41)]
+    z_list=[-4.0]
     for z in z_list:
         dir_name = f'{z}'
         os.makedirs(os.path.join(auto_dir,f'{dir_name}'), exist_ok=True)
