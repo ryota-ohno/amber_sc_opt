@@ -1,6 +1,7 @@
 ##tetracene層内計算
 import os
 os.environ['HOME'] ='/home/ohno'
+import numpy as np
 import time
 from make_8_xyz import exec_gjf##計算した点のxyzfileを出す
 from make_mono_xyz import exec_gjf_mono##計算した点のxyzfileを出す
@@ -65,7 +66,7 @@ def main_process(args):
     while not(isOver):
         #check
         isOver = listen(auto_dir,args.monomer_name,args.num_nodes,args.isTest)##argsの中身を取る
-        #time.sleep(0.1)
+        time.sleep(1)
 
 def listen(auto_dir,monomer_name,num_nodes,isTest):##args自体を引数に取るか中身をばらして取るかの違い
     fixed_param_keys = ['theta','A2','phi1','phi2','z'];opt_param_keys_1 = ['a'];opt_param_keys_2 = ['b']
@@ -79,7 +80,7 @@ def listen(auto_dir,monomer_name,num_nodes,isTest):##args自体を引数に取�
         if row['status'] != 'InProgress':
             continue
         params_dict_mono_ = {key: row[key] for key in ['phi1','phi2'] + ['file_name']}
-        phi1=int(float(params_dict_mono_.get('phi1',0.0)));phi2=int(float(params_dict_mono_.get('phi2',0.0)))
+        phi1=float(params_dict_mono_.get('phi1',0.0));phi2=float(params_dict_mono_.get('phi2',0.0))
         mono_file=os.path.join(auto_dir,f'amber/{monomer_name}_mono_{phi1}_{phi2}.out')
         if len(get_E(mono_file)) != 1:
             continue
@@ -104,7 +105,7 @@ def listen(auto_dir,monomer_name,num_nodes,isTest):##args自体を引数に取�
         E_list1 = get_E(log_filepath1)
         if len(E_list1) != 1:
             continue
-        phi1=int(float(params_dict1_.get('phi1',0.0)));phi2=int(float(params_dict1_.get('phi2',0.0)))
+        phi1=float(params_dict1_.get('phi1',0.0));phi2=float(params_dict1_.get('phi2',0.0))
         mono_file=os.path.join(auto_dir,f'amber/{monomer_name}_mono_{phi1}_{phi2}.out')
         if len(get_E(mono_file)) != 1:
             continue
@@ -131,7 +132,7 @@ def listen(auto_dir,monomer_name,num_nodes,isTest):##args自体を引数に取�
         E_list2 = get_E(log_filepath2)
         if len(E_list2) != 1:
             continue
-        phi1=int(float(params_dict1_.get('phi1',0.0)));phi2=int(float(params_dict1_.get('phi2',0.0)))
+        phi1=float(params_dict2_.get('phi1',0.0));phi2=float(params_dict2_.get('phi2',0.0))
         mono_file=os.path.join(auto_dir,f'amber/{monomer_name}_mono_{phi1}_{phi2}.out')
         if len(get_E(mono_file)) != 1:
             continue
@@ -158,7 +159,7 @@ def listen(auto_dir,monomer_name,num_nodes,isTest):##args自体を引数に取�
         E_list3 = get_E(log_filepath3)
         if len(E_list3) != 1:
             continue
-        phi1=int(float(params_dict1_.get('phi1',0.0)));phi2=int(float(params_dict1_.get('phi2',0.0)))
+        phi1=float(params_dict3_.get('phi1',0.0));phi2=float(params_dict3_.get('phi2',0.0))
         mono_file=os.path.join(auto_dir,f'amber/{monomer_name}_mono_{phi1}_{phi2}.out')
         if len(get_E(mono_file)) != 1:
             continue
@@ -185,7 +186,7 @@ def listen(auto_dir,monomer_name,num_nodes,isTest):##args自体を引数に取�
         E_list4 = get_E(log_filepath4)
         if len(E_list4) != 1:
             continue
-        phi1=int(float(params_dict1_.get('phi1',0.0)));phi2=int(float(params_dict1_.get('phi2',0.0)))
+        phi1=float(params_dict4_.get('phi1',0.0));phi2=float(params_dict4_.get('phi2',0.0))
         mono_file=os.path.join(auto_dir,f'amber/{monomer_name}_mono_{phi1}_{phi2}.out')
         if len(get_E(mono_file)) != 1:
             continue
@@ -321,7 +322,7 @@ def get_params_dict(auto_dir, num_nodes):
     for index, row in enumerate(dictlist_init_params):
         if row['status'] != 'InProgress':
             continue
-        print(index)
+        #print(index)
         dictlist_init_params,_ = read_csv_to_dictlist(init_params_csv)
         init_params_dict = get_values_from_dictlist(dictlist_init_params, index, fixed_param_keys + opt_param_keys_1 + opt_param_keys_2)
         fixed_params_dict = get_values_from_dictlist(dictlist_init_params, index, fixed_param_keys)
@@ -365,7 +366,7 @@ def get_opt_params_dict(auto_dir, init_params_dict, fixed_params_dict):
                     xyz_list.append([a, b]);E_list.append(E)
         if len(para_list) != 0:
             return False, para_list
-        min_idx = int(argmin(E_list));a_init, b_init = xyz_list[min_idx]
+        min_idx = np.argmin(E_list);a_init, b_init = xyz_list[min_idx]
         if a_init == a_init_prev and b_init == b_init_prev:
             return True, [[a_init, b_init]]
         else:

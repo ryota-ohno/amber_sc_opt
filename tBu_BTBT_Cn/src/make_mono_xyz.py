@@ -3,68 +3,28 @@ import subprocess
 from utils import Rod, R2atom
 import csv
 import math
-
-def concatenate(array_list):
-    total_array=[]
-    for arr in array_list:
-        total_array.extend(arr)
-    return total_array
-
-def matmul(mat1, mat2):
-    n = len(mat1)  # 行数
-    result = [[0.0 for _ in range(3)] for _ in range(n)]
-    for i in range(n):        # mat1 の各行
-        for j in range(3):    # mat2 の各列
-            for k in range(3):
-                result[i][j] += mat1[i][k] * mat2[k][j]
-    return result
+import numpy as np
+import pandas as pd
 
 def get_monomer_xyzR(monomer_name,Ta,Tb,Tc,A2,A3,phi1,phi2):
-    csv_path=f'/home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/monomer/{monomer_name}.csv';cols=['X','Y','Z','R'];atoms_array_xyzR = []
-    with open(csv_path, newline='') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            # 指定列の値をfloatに変換してリスト化
-            values = [float(row[col]) for col in cols]
-            atoms_array_xyzR.append(values)
-    xyz_array = [];R_array=[]
-    for x,y,z,r in atoms_array_xyzR:
-        xyz_array.append([x,y,z]);R_array.append(r)
-    xyz_array = matmul(xyz_array,Rod([-1,0,0],A2))
-    xyz_array = matmul(xyz_array,Rod([0,0,1],A3))
-    
-    C0_index = 5;C1_index = 22;C2_index = 13;C3_index = 50###前者はアルキル鎖　後者はtBu基
-    C0=xyz_array[C0_index];C1=xyz_array[C1_index]
-    nx=C1[0]-C0[0];ny=C1[1]-C0[1];nz=C1[2]-C0[2]
-    n1_=math.sqrt(nx**2+ny**2+nz**2)
-    n1=[nx/n1_,ny/n1_,nz/n1_]
-    
-    C2=xyz_array[C2_index];C3=xyz_array[C3_index]
-    nx=C3[0]-C2[0];ny=C3[1]-C2[1];nz=C3[2]-C2[2]
-    n2_=math.sqrt(nx**2+ny**2+nz**2)
-    n2=[nx/n2_,ny/n2_,nz/n2_]
-    
-    xyz_array_=[]; i=0
-    for x,y,z in xyz_array:
-        if i < 22: #0~21 BTBT
-            xyz_array_.append([x,y,z])
-        elif i > 21 and i < 50: #22~49 アルキル鎖
-            xyz_array_1=[[x-C0[0],y-C0[1],z-C0[2]]]
-            xyz_array_2=matmul(xyz_array_1,Rod(n2,phi2))
-            xyz_array_.append([xyz_array_2[0][0]+C0[0],xyz_array_2[0][1]+C0[1],xyz_array_2[0][2]+C0[2]])
-        elif i > 49 : #50~62 tBu
-            xyz_array_1=[[x-C2[0],y-C2[1],z-C2[2]]]
-            xyz_array_2=matmul(xyz_array_1,Rod(n1,phi1))
-            xyz_array_.append([xyz_array_2[0][0]+C2[0],xyz_array_2[0][1]+C2[1],xyz_array_2[0][2]+C2[2]])
-        i+=1
+    T_vec = np.array([Ta,Tb,Tc])
+    df_mono=pd.read_csv(f'/home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/monomer/{monomer_name}.csv')
+    atoms_array_xyzR=df_mono[['X','Y','Z','R']].values
+    xyz_array = atoms_array_xyzR[:,:3];R_array = atoms_array_xyzR[:,3].reshape((-1,1))
 
-    xyz_array_f = []
-    for x,y,z in xyz_array_:
-        xyz_array_f.append([x+Ta,y+Tb,z+Tc])
-    xyzR_array=[]
-    for i in range(len(xyz_array_f)):
-        xyzR_array.append([xyz_array_f[i][0],xyz_array_f[i][1],xyz_array_f[i][2],R_array[i]])
-    return xyzR_array
+    ex = np.array([1.,0.,0.]); ez = np.array([0.,0.,1.])
+    xyz_array = np.matmul(xyz_array,Rod(-ex,A2).T)#
+    xyz_array = np.matmul(xyz_array,Rod(ez,A3).T)#
+    xyz_array = xyz_array + T_vec
+    
+    C0_index = 5;C1_index = 22;C2_index = 13;C3_index = 50####
+    C0=xyz_array[C0_index];C1=xyz_array[C1_index];C2=xyz_array[C2_index];C3=xyz_array[C3_index]
+    n1=C1-C0;n1/=np.linalg.norm(n1)
+    n2=C3-C2;n2/=np.linalg.norm(n2)
+
+    xyz_array[C1_index:C3_index] = np.matmul((xyz_array[C1_index:C3_index]-C0),Rod(n2,phi2).T) + C0
+    xyz_array[C3_index:] = np.matmul((xyz_array[C3_index:]-C2),Rod(n1,phi1).T) + C2
+    return np.concatenate([xyz_array,R_array],axis=1)
         
 line1='@<TRIPOS>MOLECULE\ntBu_BTBT_Cn\n   63    66     1     0     0\nSMALL\nbcc\n\n\n@<TRIPOS>ATOM\n'
 line2='@<TRIPOS>BOND\n'
@@ -90,7 +50,7 @@ with open(r'/home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/monomer/tBu_BTBT_C9.mol2
 def get_xyzR_lines(xyzr_array):
     lines=[]
     lines.append(line1)
-    mol=int(len(xyzr_array))
+    mol=len(xyzr_array)
     for i in range(mol):
         x,y,z,r=xyzr_array[i]
         atom_type,charge=para_list[i]
@@ -132,7 +92,7 @@ f'saveamberparm MOL {file_basename}.prmtop {file_basename}.inpcrd\n',
     return file_job,f'{file_basename}.out'
 
 def make_xyzfile(monomer_name,params_dict):
-    phi1 = int(params_dict.get('phi1',0.0));phi2 = int(params_dict.get('phi2',0.0))
+    phi1 = float(params_dict.get('phi1',0.0));phi2 = float(params_dict.get('phi2',0.0))
 
     monomer_array_i = get_monomer_xyzR(monomer_name,0,0,0,0,0,phi1,phi2)
     xyz_list=[]
@@ -149,13 +109,11 @@ def make_xyz(monomer_name,params_dict):
     xyzfile_name += '_mono'
     for key,val in params_dict.items():
         val=float(val)
-        if key in ['phi1','phi2']:
-            val = int(val)
         xyzfile_name += '_{}'.format(val)
     return xyzfile_name + '.xyz'
 
 def make_gjf_xyz(auto_dir,monomer_name,params_dict):
-    phi1 = int(params_dict.get('phi1',0.0));phi2 = int(params_dict.get('phi2',0.0))
+    phi1 = float(params_dict.get('phi1',0.0));phi2 = float(params_dict.get('phi2',0.0))
 
     monomer_array = get_monomer_xyzR(monomer_name,0,0,0,0,0,phi1,phi2)
     line_list_monomer = get_xyzR_lines(monomer_array)
@@ -175,10 +133,6 @@ def get_file_name_from_dict(monomer_name,params_dict):
     xyzfile_name += '_mono'
     for key,val in params_dict.items():
         val=float(val)
-        if key in ['phi1','phi2']:
-            val = int(val)
-            xyzfile_name += f'_{val}'
-    
     return xyzfile_name + '.mol2'
     
 def exec_gjf_mono(auto_dir, monomer_name, params_dict,isTest=True):
