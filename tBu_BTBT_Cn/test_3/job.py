@@ -10,23 +10,29 @@ def init_process(args):
     auto_dir = f'/home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/{args.auto_dir}'
     monomer_name=args.monomer_name
     df_init=pd.read_csv(os.path.join(auto_dir,'step1_init_params.csv'))
-    os.chdir(auto_dir)
-    job_lines=[
-    '#$ -S /bin/sh \n',
-    '#$ -cwd \n',
-    '#$ -V \n',
-    '#$ -q gr1.q \n',
-    '#$ -pe OpenMP 40 \n',
-    '\n',
-    'hostname \n',
-    '\n',
-    f'python /home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/src/step1_8_xyz_0.py --auto-dir {args.auto_dir} --monomer-name {monomer_name} --num-nodes 10\n',
-    '\n',
-    '#sleep 12 \n'
-        ]
-    with open(os.path.join(auto_dir,f'job.sh'),'w')as f:
-        f.writelines(job_lines)
-    subprocess.run(['qsub',os.path.join(auto_dir,f'job.sh')])
+    theta_list=[30.0,60.0]
+    for theta in theta_list:
+        dir_name = f'{theta}'
+        os.makedirs(os.path.join(auto_dir,f'{dir_name}'), exist_ok=True)
+        df_init_=df_init[df_init['theta']==theta]
+        df_init_.to_csv(os.path.join(auto_dir,f'{dir_name}/step1_init_params.csv'),index=False)
+        os.chdir(os.path.join(auto_dir,f'{dir_name}'))
+        job_lines=[
+        '#$ -S /bin/sh \n',
+        '#$ -cwd \n',
+        '#$ -V \n',
+        '#$ -q gr1.q \n',
+        '#$ -pe OpenMP 40 \n',
+        '\n',
+        'hostname \n',
+        '\n',
+        f'python /home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/src/step1_8_xyz_0.py --auto-dir {args.auto_dir}/{dir_name} --monomer-name {monomer_name} --num-nodes 10\n',
+        '\n',
+        '#sleep 12 \n'
+            ]
+        with open(os.path.join(auto_dir,f'{dir_name}/job.sh'),'w')as f:
+            f.writelines(job_lines)
+        subprocess.run(['qsub',os.path.join(auto_dir,f'{dir_name}/job.sh')])
 
 def update_value_in_df(df,index,key,value):
     df.loc[index,key]=value
