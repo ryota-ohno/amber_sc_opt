@@ -6,23 +6,6 @@ import argparse
 import subprocess
 import numpy as np
 
-def main_process(args):
-    auto_dir = f'/home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/{args.auto_dir}'
-    df_init=pd.read_csv(os.path.join(auto_dir,'step1_init_params.csv'))
-    while True:
-        z_list=[np.round(z,1) for z in np.linspace(-4.0,4.0,41)]
-        for z in z_list:
-            dir_name = f'{z}'
-            path_dir=os.path.join(auto_dir,f'{dir_name}')
-            df_init_=pd.read_csv(os.path.join(path_dir,'step1_init_params.csv'))
-            if len(df_init_)==len(df_init_[df_init_['status']=='Done']):
-                df_init.loc[df_init['z'] == z, 'status'] = 'Done'
-                df_init.to_csv(os.path.join(auto_dir,'step1_init_params.csv'),index=False)
-        df_init_done=df_init[df_init['status']=='Done']
-        if len(df_init)==len(df_init_done):
-            break
-    print('Done')    
-
 def result_process(args):
     subprocess.run(['rm','*.sh.*'])
     auto_dir = f'/home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/{args.auto_dir}'
@@ -50,7 +33,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     print("----main process----")
-    main_process(args)
     result_process(args)
     print("----finish process----")
     
