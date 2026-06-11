@@ -6,7 +6,7 @@ import pandas as pd
 
 def get_monomer_xyzR(monomer_name,Ta,Tb,Tc,A2,A3,phi):  
     T_vec = np.array([Ta,Tb,Tc])
-    df_mono=pd.read_csv(f'/home/ohno/Working/amber_sc_opt/tBu_BTBT_Cn/monomer/{monomer_name}.csv')
+    df_mono=pd.read_csv(f'/home/ohno/Working/amber_sc_opt/ditBu_BTBT/monomer/{monomer_name}.csv')
     atoms_array_xyzR=df_mono[['X','Y','Z','R']].values
     xyz_array = atoms_array_xyzR[:,:3];R_array = atoms_array_xyzR[:,3].reshape((-1,1))
 
