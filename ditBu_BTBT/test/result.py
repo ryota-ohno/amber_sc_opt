@@ -8,7 +8,7 @@ import numpy as np
 
 def result_process(args):
     subprocess.run(['rm','*.sh.*'])
-    auto_dir = f'/home/ohno/Working/amber_sc_opt/ditBu_BTBT{args.auto_dir}'
+    auto_dir = f'/home/ohno/Working/amber_sc_opt/ditBu_BTBT/{args.auto_dir}'
     df_init=pd.read_csv(os.path.join(auto_dir,'step1_init_params.csv'))
     df_tot=[]
     z_list=[np.round(z,1) for z in np.linspace(-4.0,4.0,41)]

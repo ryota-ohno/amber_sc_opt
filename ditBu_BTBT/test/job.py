@@ -26,7 +26,7 @@ def init_process(args):
         '\n',
         'hostname \n',
         '\n',
-        f'python /home/ohno/Working/amber_sc_opt/ditBu_BTBTsrc/step1_8_xyz_ab.py --auto-dir {args.auto_dir}/{dir_name} --monomer-name {monomer_name} --num-nodes 2\n',
+        f'python /home/ohno/Working/amber_sc_opt/ditBu_BTBT/src/step1_8_xyz_ab.py --auto-dir {args.auto_dir}/{dir_name} --monomer-name {monomer_name} --num-nodes 2\n',
         '\n',
         '#sleep 12 \n'
             ]
