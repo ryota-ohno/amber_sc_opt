@@ -7,7 +7,7 @@ import subprocess
 import numpy as np
 
 def init_process(args):
-    auto_dir = f'/home/ohno/Working/amber_sc_opt/ditBu_BTBT{args.auto_dir}'
+    auto_dir = f'/home/ohno/Working/amber_sc_opt/ditBu_BTBT/{args.auto_dir}'
     monomer_name=args.monomer_name
     df_init=pd.read_csv(os.path.join(auto_dir,'step1_init_params.csv'))
     z_list=[np.round(z,1) for z in np.linspace(-4.0,4.0,41)]
