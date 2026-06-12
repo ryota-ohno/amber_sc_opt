@@ -17,13 +17,11 @@ def get_monomer_xyzR(monomer_name,Ta,Tb,Tc,A2,A3,phi):
     xyz_array = np.matmul(xyz_array,Rod(ez,A3).T)#
     xyz_array = xyz_array + T_vec
     
-    C0_index = 5;C1_index = 35;C2_index = 13;C3_index = 22####
-    C0=xyz_array[C0_index];C1=xyz_array[C1_index];C2=xyz_array[C2_index];C3=xyz_array[C3_index]
+    C0_index = 0;C1_index = 1####
+    C0=xyz_array[C0_index];C1=xyz_array[C1_index]
     n1=C1-C0;n1/=np.linalg.norm(n1)
-    n2=C3-C2;n2/=np.linalg.norm(n2)
 
-    xyz_array[C1_index:C3_index] = np.matmul((xyz_array[C1_index:C3_index]-C0),Rod(n2,phi).T) + C0
-    xyz_array[C3_index:] = np.matmul((xyz_array[C3_index:]-C2),Rod(n1,-phi).T) + C2
+    xyz_array = np.matmul((xyz_array-C0),Rod(n1,phi).T) + C0
     return np.concatenate([xyz_array,R_array],axis=1)
         
 line1='@<TRIPOS>MOLECULE\nmono-C9-BTBT\n   29    28     1     0     0\nSMALL\nbcc\n\n\n@<TRIPOS>ATOM\n'
