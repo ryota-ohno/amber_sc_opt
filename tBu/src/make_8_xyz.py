@@ -29,7 +29,7 @@ bond_lines=[[1, 1, 2, '1'], [2, 2, 3, '1'], [3, 2, 7, '1'], [4, 2, 11, '1'], [5,
 line3='@<TRIPOS>SUBSTRUCTURE\n     1 RES1        1 GROUP             0 ****  ****    0  \n     2 RES2       15 GROUP             0 ****  ****    0 \n\n'
 
 para_list=[]
-with open(r'/home/ohno/Working/amber_sc_opt/tBu/monomer/tBu_BTBT_C9.mol2')as f:
+with open(r'/home/ohno/Working/amber_sc_opt/tBu/monomer/tBu.mol2')as f:
     for line in f:
         #print(line)
         s=line.split()
