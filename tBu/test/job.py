@@ -22,7 +22,7 @@ def init_process(args):
         '#$ -cwd \n',
         '#$ -V \n',
         '#$ -q gr1.q \n',
-        '#$ -pe OpenMP 52 \n',
+        '#$ -pe OpenMP 40 \n',
         '\n',
         'hostname \n',
         '\n',
