@@ -31,13 +31,14 @@ def init_process(args):
         '\n',
         'hostname \n',
         '\n',
-        f'python /home/ohno/Working/amber_sc_opt/ditBu_BTBT/src/step1_8_xyz_ab.py --auto-dir {args.auto_dir}/{dir_name} --monomer-name {monomer_name} --num-nodes 2\n',
+        f'python /home/ohno/Working/amber_sc_opt/ditBu_BTBT/src/step1_8_xyz_0.py --auto-dir {args.auto_dir}/{dir_name} --monomer-name {monomer_name} --num-nodes 2\n',
         '\n',
         '#sleep 12 \n'
             ]
         with open(os.path.join(auto_dir,f'{dir_name}/job.sh'),'w')as f:
             f.writelines(job_lines)
         subprocess.run(['qsub',os.path.join(auto_dir,f'{dir_name}/job.sh')])
+        i+=1
 
 def update_value_in_df(df,index,key,value):
     df.loc[index,key]=value
