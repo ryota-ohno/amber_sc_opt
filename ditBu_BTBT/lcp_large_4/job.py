@@ -11,18 +11,23 @@ def init_process(args):
     monomer_name=args.monomer_name
     df_init=pd.read_csv(os.path.join(auto_dir,'step1_init_params.csv'))
     z_list=[np.round(z,1) for z in np.linspace(-4.0,4.0,41)]
+    i=0
     for z in z_list:
         dir_name = f'{z}'
         os.makedirs(os.path.join(auto_dir,f'{dir_name}'), exist_ok=True)
         df_init_=df_init[df_init['z']==z]
         df_init_.to_csv(os.path.join(auto_dir,f'{dir_name}/step1_init_params.csv'),index=False)
         os.chdir(os.path.join(auto_dir,f'{dir_name}'))
+        if i%2==0:
+            gr=2;num=52
+        else:
+            gr=1;num=40
         job_lines=[
         '#$ -S /bin/sh \n',
         '#$ -cwd \n',
         '#$ -V \n',
-        '#$ -q gr2.q \n',
-        '#$ -pe OpenMP 52 \n',
+        f'#$ -q gr{gr}.q \n',
+        f'#$ -pe OpenMP {num} \n',
         '\n',
         'hostname \n',
         '\n',
