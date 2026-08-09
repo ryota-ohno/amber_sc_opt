@@ -137,13 +137,13 @@ def listen(auto_dir,monomer_name,E_mono,num_nodes):##args自体を引数に取�
                     file_name = exec_gjf(auto_dir, monomer_name, {**params_dict1}, structure_type=1,isTest=True)
                     df_newline_1 = pd.Series({**params_dict1,'E1':0.,'status':'InProgress','file_name':file_name})
                     df_E_1=pd.concat([df_E_1,df_newline_1.to_frame().T],axis=0,ignore_index=True)
-                df_E_2_filtered = filter_df(df_E_2, params_dict1)
+                df_E_2_filtered = filter_df(df_E_2, params_dict2)
                 if len(df_E_2_filtered) == 0:                        
                     ## 2の実行　##
                     file_name = exec_gjf(auto_dir, monomer_name, {**params_dict2}, structure_type=2,isTest=True)
                     df_newline_2 = pd.Series({**params_dict2,'E2':0.,'status':'InProgress','file_name':file_name})
                     df_E_2=pd.concat([df_E_2,df_newline_2.to_frame().T],axis=0,ignore_index=True)
-                df_E_3_filtered = filter_df(df_E_3, params_dict1)
+                df_E_3_filtered = filter_df(df_E_3, params_dict3)
                 if len(df_E_3_filtered) == 0:                                        
                     ## 3の実行　##
                     file_name = exec_gjf(auto_dir, monomer_name, {**params_dict3}, structure_type=3,isTest=True)
