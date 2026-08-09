@@ -129,23 +129,27 @@ def listen(auto_dir,monomer_name,E_mono,num_nodes):##args自体を引数に取�
                 df_E_filtered = filter_df(df_E, params_dict)
                 if len(df_E_filtered) == 0:
                     df_newline = pd.Series({**params_dict,'E':0.,'E1':0.,'E2':0.,'E3':0.,'status':'InProgress'})
-                    df_E_new=pd.concat([df_E,df_newline.to_frame().T],axis=0,ignore_index=True)
+                    df_E=pd.concat([df_E,df_newline.to_frame().T],axis=0,ignore_index=True)
 
-                ## 1の実行　##
-                file_name = exec_gjf(auto_dir, monomer_name, {**params_dict1}, structure_type=1,isTest=True)
-                df_newline_1 = pd.Series({**params_dict1,'E1':0.,'status':'InProgress','file_name':file_name})
-                df_E_1=pd.concat([df_E_1,df_newline_1.to_frame().T],axis=0,ignore_index=True)
-                    
-                ## 2の実行　##
-                file_name = exec_gjf(auto_dir, monomer_name, {**params_dict2}, structure_type=2,isTest=True)
-                df_newline_2 = pd.Series({**params_dict2,'E2':0.,'status':'InProgress','file_name':file_name})
-                df_E_2=pd.concat([df_E_2,df_newline_2.to_frame().T],axis=0,ignore_index=True)
-                                    
-                ## 3の実行　##
-                file_name = exec_gjf(auto_dir, monomer_name, {**params_dict3}, structure_type=3,isTest=True)
-                df_newline_3 = pd.Series({**params_dict3,'E3':0.,'status':'InProgress','file_name':file_name})
-                df_E_3=pd.concat([df_E_3,df_newline_3.to_frame().T],axis=0,ignore_index=True)
-        df_E_new.to_csv(auto_csv,index=False);df_E_1.to_csv(auto_csv_1,index=False);df_E_2.to_csv(auto_csv_2,index=False);df_E_3.to_csv(auto_csv_3,index=False)
+                df_E_1_filtered = filter_df(df_E_1, params_dict1)
+                if len(df_E_1_filtered) == 0:
+                    ## 1の実行　##
+                    file_name = exec_gjf(auto_dir, monomer_name, {**params_dict1}, structure_type=1,isTest=True)
+                    df_newline_1 = pd.Series({**params_dict1,'E1':0.,'status':'InProgress','file_name':file_name})
+                    df_E_1=pd.concat([df_E_1,df_newline_1.to_frame().T],axis=0,ignore_index=True)
+                df_E_2_filtered = filter_df(df_E_2, params_dict1)
+                if len(df_E_2_filtered) == 0:                        
+                    ## 2の実行　##
+                    file_name = exec_gjf(auto_dir, monomer_name, {**params_dict2}, structure_type=2,isTest=True)
+                    df_newline_2 = pd.Series({**params_dict2,'E2':0.,'status':'InProgress','file_name':file_name})
+                    df_E_2=pd.concat([df_E_2,df_newline_2.to_frame().T],axis=0,ignore_index=True)
+                df_E_3_filtered = filter_df(df_E_3, params_dict1)
+                if len(df_E_3_filtered) == 0:                                        
+                    ## 3の実行　##
+                    file_name = exec_gjf(auto_dir, monomer_name, {**params_dict3}, structure_type=3,isTest=True)
+                    df_newline_3 = pd.Series({**params_dict3,'E3':0.,'status':'InProgress','file_name':file_name})
+                    df_E_3=pd.concat([df_E_3,df_newline_3.to_frame().T],axis=0,ignore_index=True)
+        df_E.to_csv(auto_csv,index=False);df_E_1.to_csv(auto_csv_1,index=False);df_E_2.to_csv(auto_csv_2,index=False);df_E_3.to_csv(auto_csv_3,index=False)
 
     init_params_csv=os.path.join(auto_dir, 'step1_init_params.csv')
     df_init_params = pd.read_csv(init_params_csv)
