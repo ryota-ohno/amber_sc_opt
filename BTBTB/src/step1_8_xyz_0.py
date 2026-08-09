@@ -56,9 +56,7 @@ def listen(auto_dir,monomer_name,E_mono,num_nodes,isTest):##args自体を引数�
     for idx, row in df_prg_1.iterrows():
         params_dict1_ = row[fixed_param_keys + opt_param_keys_1 + ['file_name']].to_dict()
         file_name1=params_dict1_['file_name']
-        log_filepath1 = os.path.join(*[auto_dir,'gaussian',file_name1])
-        if not(os.path.exists(log_filepath1)):
-            continue
+        log_filepath1 = os.path.join(*[auto_dir,'amber',file_name1])
         E_list1=get_E(log_filepath1)
         if len(E_list1)!=1 :##get Eの長さは計算した分子の数
             continue
@@ -72,9 +70,7 @@ def listen(auto_dir,monomer_name,E_mono,num_nodes,isTest):##args自体を引数�
     for idx, row in df_prg_2.iterrows():
         params_dict2_ = row[fixed_param_keys + opt_param_keys_2 + ['file_name']].to_dict()
         file_name2=params_dict2_['file_name']
-        log_filepath2 = os.path.join(*[auto_dir,'gaussian',file_name2])
-        if not(os.path.exists(log_filepath2)):
-            continue
+        log_filepath2 = os.path.join(*[auto_dir,'amber',file_name2])
         E_list2=get_E(log_filepath2)
         if len(E_list2)!=1 :##get Eの長さは計算した分子の数
             continue
@@ -88,9 +84,7 @@ def listen(auto_dir,monomer_name,E_mono,num_nodes,isTest):##args自体を引数�
     for idx, row in df_prg_3.iterrows():
         params_dict3_ = row[fixed_param_keys + opt_param_keys_1 + opt_param_keys_2 + ['file_name']].to_dict()
         file_name3=params_dict3_['file_name']
-        log_filepath3 = os.path.join(*[auto_dir,'gaussian',file_name3])
-        if not(os.path.exists(log_filepath3)):
-            continue
+        log_filepath3 = os.path.join(*[auto_dir,'amber',file_name3])
         E_list3=get_E(log_filepath3)
         if len(E_list3)!=1 :##get Eの長さは計算した分子の数
             continue
