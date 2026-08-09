@@ -124,7 +124,7 @@ def listen(auto_dir,monomer_name,E_mono,num_nodes,isTest):##args自体を引数�
             params_dict1 = {k: v for k, v in params_dict.items() if (k in fixed_param_keys) or (k in opt_param_keys_1)}
             params_dict2 = {k: v for k, v in params_dict.items() if (k in fixed_param_keys) or (k in opt_param_keys_2)}
             params_dict3 = params_dict
-            alreadyCalculated = check_calc_status(auto_dir,params_dict)
+            alreadyCalculated = check_calc_status(df_E,params_dict)
             if not(alreadyCalculated):
                 df_E_filtered = filter_df(df_E, params_dict)
                 if len(df_E_filtered) == 0:
