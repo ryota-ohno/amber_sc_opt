@@ -10,7 +10,7 @@ def init_process(args):
     auto_dir = f'/home/ohno/Working/amber_sc_opt/Ph_step3/{args.auto_dir}'
     monomer_name=args.monomer_name
     df_init=pd.read_csv(os.path.join(auto_dir,'step3_init_params.csv'))
-    phi_list=[int(phi) for phi in np.linspace(0,170,18)]
+    phi_list=[int(phi) for phi in np.linspace(0,170,18)];i=0
     for phi in phi_list:
         dir_name = f'{phi}'
         os.makedirs(os.path.join(auto_dir,f'{dir_name}'), exist_ok=True)
