@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 def get_E(file):
     i=0;E_list=[]
