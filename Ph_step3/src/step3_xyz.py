@@ -40,6 +40,7 @@ def listen(auto_dir,monomer_name,num_nodes,E_mono):##args自体を引数に取�
         reader = csv.DictReader(f)
         for row in reader:
             rows_1.append(row)
+    calc=0
     for idx, row in enumerate(rows_1):
         if row['status'] != 'InProgress':
             continue
@@ -59,11 +60,12 @@ def listen(auto_dir,monomer_name,num_nodes,E_mono):##args自体を引数に取�
         E_columns=['E1','E2','E3','E4','E5','E6','E7','E8','E9']
         for key, value in zip(E_columns, E_list):
             rows_1[idx][key] = f"{value:.4f}"
-        rows_1[idx]['E'] = f"{sum(E_list):.4f}";rows_1[idx]['status'] = 'Done'
-    with open(auto_csv_1, mode='w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=rows_1[0].keys())
-        writer.writeheader()
-        writer.writerows(rows_1)
+        rows_1[idx]['E'] = f"{sum(E_list):.4f}";rows_1[idx]['status'] = 'Done';calc+=1
+    if calc>0:
+        with open(auto_csv_1, mode='w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=rows_1[0].keys())
+            writer.writeheader()
+            writer.writerows(rows_1)
 
 
     dict_matrix = get_params_dict(auto_dir,num_nodes)##更新分を流す a1/HOME/HASEGAWALABz2まで取得
